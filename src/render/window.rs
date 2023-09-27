@@ -1,21 +1,12 @@
-use core::time;
 use std::{
     num::NonZeroU32,
-    sync::mpsc::{
-        Receiver,
-        SyncSender,
-        self,
-    },
-    thread,
+    sync::mpsc::Receiver,
 };
 
-use crate::{render::pixel::{
-    PixelList,
-    Pixel,
-}, constants};
+use crate::render::pixel::PixelList;
 
 use softbuffer::{Context, Surface};
-use tiny_skia::{Pixmap, Color, Paint, Transform};
+use tiny_skia::{Pixmap, Paint, Transform};
 use winit::{
     event::{
         Event,
@@ -85,7 +76,27 @@ impl MainWindow{
                         )
                         .unwrap();
 
-                    let pixmap = Pixmap::new(width, height).unwrap();
+                    let mut pixmap = Pixmap::new(width, height).unwrap();
+
+                    let pixel_list_result = self.pixel_receiver.try_recv();
+                    let pixel_list = match pixel_list_result{
+                        Ok(pix_list) => pix_list,
+                        Err(_e) => PixelList::new(),
+                    };
+                    
+                    let pix_data = PixelData::get_data(width, height);
+                    let mut paint = Paint::default();
+                    for pixel in pixel_list{
+                        let (r, g, b, a) = pixel.pix_color();
+                        paint.set_color_rgba8(r, g, b, a);
+                        match pixel.pix_rect(pix_data.clone()){
+                            Ok(pixel_rect) => {
+                                pixmap.fill_rect(pixel_rect, &paint, Transform::identity(), None);
+                            },
+                            Err(_e) => {},
+                        }
+                    }
+
                     let mut buffer = self.surface.buffer_mut().unwrap();
                     for index in 0..(width * height) as usize{
                         buffer[index] = pixmap.data()[index * 4 + 2] as u32
@@ -109,7 +120,6 @@ impl MainWindow{
                 let pixel_list = match pixel_list_result{
                     Ok(pix_list) => pix_list,
                     Err(_e) => {
-                        thread::sleep(constants::SLEEP_DURATION);
                         break 'frame_loop;
                     },
                 };
@@ -119,7 +129,12 @@ impl MainWindow{
                 for pixel in pixel_list{
                     let (r, g, b, a) = pixel.pix_color();
                     paint.set_color_rgba8(r, g, b, a);
-                    pixmap.fill_rect(pixel.pix_rect(pix_data.clone()), &paint, Transform::identity(), None);
+                    match pixel.pix_rect(pix_data.clone()){
+                        Ok(pixel_rect) => {
+                            pixmap.fill_rect(pixel_rect, &paint, Transform::identity(), None);
+                        },
+                        Err(_e) => {},
+                    }
                 }
 
                 let mut buffer = self.surface.buffer_mut().unwrap();
@@ -129,6 +144,7 @@ impl MainWindow{
                         | (pixmap.data()[index * 4] as u32) << 16;
                 }
                 buffer.present().unwrap();
+                break 'frame_loop;
             }
         });
     }

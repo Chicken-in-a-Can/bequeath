@@ -1,24 +1,28 @@
-use tiny_skia::{Path, PathBuilder, Rect};
+use tiny_skia::Rect;
 
-use crate::{
-    render::window::MainWindow,
-    constants,
-};
+use crate::constants;
 
 #[derive(Copy, Clone, Debug)]
 pub struct PixelData{
+    window_width: u32,
+    window_height: u32,
     pix_width_height: u16,
 }
 
 impl PixelData{
-    pub fn get_data(width: u32, _height: u32) -> Self{
-        let pix_width_height: u16 = (width / constants::PIXELS_WIDTH) as u16;
+    pub fn get_data(width: u32, height: u32) -> Self{
+        let pix_width_height: u16 = (width as f32 / constants::PIXELS_WIDTH as f32) as u16;
         return Self{
+            window_width: width,
+            window_height: height,
             pix_width_height,
         };
     }
     pub fn get_width_height(&self) -> u16{
         return self.pix_width_height;
+    }
+    pub fn get_screen_dimensions(&self) -> (u32, u32){
+        return (self.window_width, self.window_height);
     }
 }
 
@@ -45,15 +49,19 @@ impl Pixel{
             been_rendered: false,
         };
     }
-    pub fn pix_rect(&self, pix_data: PixelData) -> Rect{
+    pub fn pix_rect(&self, pix_data: PixelData) -> Result<Rect, ()>{
         let width_height = pix_data.get_width_height();
+        let (max_width, max_height) = pix_data.get_screen_dimensions();
+        if (self.x_pos * width_height) + width_height >= max_width as u16 || (self.y_pos * width_height) + width_height >= max_height as u16{
+            return Err(());
+        }
         let pix_square = Rect::from_xywh(
             (self.x_pos * width_height) as f32,
             (self.y_pos * width_height) as f32,
             width_height as f32,
             width_height as f32,
         );
-        return pix_square.unwrap();
+        return Ok(pix_square.unwrap());
     }
     pub fn pix_color(&self) -> (u8, u8, u8, u8){
         return (
@@ -108,7 +116,7 @@ impl PixelList{
             return;
         }
         let index = self.locate(pixel.get_abs_loc()) as usize;
-        if pixel.comp_pixels(self.pixel_list[index]){
+        if index != u32::MAX as usize && pixel.comp_pixels(self.pixel_list[index]){
             return;
         }
         if index as u32 != u32::MAX && self.pixel_list[index].get_abs_loc() == pixel.get_abs_loc(){
@@ -125,8 +133,9 @@ impl PixelList{
         let mut max = self.pixel_list.len() as u32;
         let mut min = 0;
         let element_num = u32::MAX;
-        while search_num != element_num{
-            let split_index: u32 = (max + min) / 2;
+        let mut split_index: u32 = (max + min) / 2;
+        while search_num != element_num && (split_index != (self.pixel_list.len() - 1) as u32) && split_index != 0{
+            split_index = (max + min) / 2;
             let element_num = self.pixel_list[split_index as usize].get_abs_loc();
             if element_num == search_num{
                 return split_index;
