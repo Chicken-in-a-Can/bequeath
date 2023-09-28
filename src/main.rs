@@ -32,6 +32,7 @@ fn main() {
                     }
                     let _result = pixel_sender.send(pix_vec.clone());
                 }
+                pix_vec.clean();
             }
         }
     });

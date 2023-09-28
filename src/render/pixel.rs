@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 /*
 *   Defines all pixel-related structs
 *   Works closely with the window structs
@@ -87,7 +89,7 @@ impl Pixel{
 
         // Check to make sure pixels don't go further than the available window space. 
         // return error if it is too long
-        if (self.x_pos * width_height) + width_height >= max_width as u16 || (self.y_pos * width_height) + width_height >= max_height as u16{
+        if ((self.x_pos * width_height) + width_height) >= max_width as u16 || ((self.y_pos * width_height) + width_height) >= max_height as u16{
             return Err(());
         }
 
@@ -239,6 +241,18 @@ impl PixelList{
     // Make the allow rerender boolean false
     pub fn disable_rerender(&mut self){
         self.allow_rerender = false;
+    }
+    pub fn clean(&mut self){
+        let mut abs_pos_hs: HashSet<u32> = HashSet::new();
+        let mut count = 0;
+        for pixel in self.pixel_list.clone(){
+            if abs_pos_hs.contains(&pixel.get_abs_loc()){
+                self.pixel_list.remove(count);
+            } else{
+                abs_pos_hs.insert(pixel.get_abs_loc());
+            }
+            count += 1;
+        }
     }
 }
 
