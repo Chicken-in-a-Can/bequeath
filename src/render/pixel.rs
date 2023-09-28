@@ -231,9 +231,11 @@ impl PixelList{
                     max = split_index;
                 }
             }
+            // Check number of times it's looped,
+            // if too big, break out
             iterations += 1;
             if iterations >= self.pixel_list.len(){
-                break;
+                return u32::MAX;
             }
             // Repeat the loop
         }
