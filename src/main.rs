@@ -1,4 +1,5 @@
-use bequeath::render::{window, pixel::{PixelList, Pixel}};
+use bequeath::render::{window, pixel::PixelList};
+use bequeath::sprite::sprite;
 use std::thread;
 use std::sync::mpsc;
 
@@ -8,32 +9,14 @@ fn main() {
 
     let mut pix_vec = PixelList::new();
 
+    let player_sprite = sprite::Sprite::new("../assets/player/idle.png");
+    let background_sprite = sprite::Sprite::new("../assets/world/base.png");
+
     thread::spawn(move ||{
         loop{
-            for k in 0..2{
-                for j in 0..99{
-                    let mut count = 0;
-                    for i in 0..159{
-                        count += 1;
-                        if k % 2 == 0{
-                            if j % 2 == 0{
-                                pix_vec.add_pixel(Pixel::new(255, count, 255, i, j));
-                            } else{
-                                pix_vec.add_pixel(Pixel::new(255, 255, count, i, j));
-                            }
-                        } else{
-                            if j % 2 == 0{
-                                pix_vec.add_pixel(Pixel::new(0, count, 0, i, j));
-                            } else{
-                                pix_vec.add_pixel(Pixel::new(0, 0, count, i, j));
-                            }
-
-                        }
-                    }
-                    let _result = pixel_sender.send(pix_vec.clone());
-                }
-                pix_vec.clean();
-            }
+            background_sprite.add_to_pixel_list(&mut pix_vec, 0, 0);
+            player_sprite.add_to_pixel_list(&mut pix_vec, 0, 0);
+            let _result = pixel_sender.send(pix_vec.clone());
         }
     });
 

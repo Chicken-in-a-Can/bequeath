@@ -214,6 +214,7 @@ impl PixelList{
         // Create a halfway point
         let mut split_index: u32 = (max + min) / 2;
         // loop while we don't have the index
+        let mut iterations = 0;
         while search_num != element_num && (split_index != (self.pixel_list.len() - 1) as u32) && split_index != 0{
             // update the halfway point
             split_index = (max + min) / 2;
@@ -229,6 +230,10 @@ impl PixelList{
                 } else{
                     max = split_index;
                 }
+            }
+            iterations += 1;
+            if iterations >= self.pixel_list.len(){
+                break;
             }
             // Repeat the loop
         }
