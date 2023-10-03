@@ -9,6 +9,7 @@ use image::{io::Reader, Rgba};
 use crate::render::pixel::{PixelList, Pixel};
 
 // Define the sprite struct
+#[derive(Clone, Debug)]
 pub struct Sprite{
     pix_matrix: Vec<Vec<[u8; 4]>>,
 }

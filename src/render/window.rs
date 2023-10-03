@@ -6,7 +6,7 @@
 
 use std::{
     num::NonZeroU32,
-    sync::mpsc::Receiver,
+    sync::mpsc::{Receiver, SyncSender},
 };
 
 use crate::{render::pixel::PixelList, constants};
@@ -17,6 +17,8 @@ use winit::{
     event::{
         Event,
         WindowEvent,
+        KeyboardInput,
+        DeviceEvent,
     },
     event_loop::{
         ControlFlow,
@@ -41,11 +43,13 @@ pub struct MainWindow{
     surface: Surface,
     // A receiver to receive the pixels we are to draw
     pixel_receiver: Receiver<PixelList>,
+    // A sender for keyboard inputs
+    keyboard_event_sender: SyncSender<KeyboardInput>,
 }
 
 impl MainWindow{
     // Create a new window struct
-    pub fn new(pixel_receiver: Receiver<PixelList>) -> Self{
+    pub fn new(pixel_receiver: Receiver<PixelList>, keyboard_event_sender: SyncSender<KeyboardInput>) -> Self{
         // Create new event loop
         let event_loop = EventLoop::new();
         // uild our window using the event loop we made
@@ -67,6 +71,7 @@ impl MainWindow{
             window,
             surface,
             pixel_receiver,
+            keyboard_event_sender
         }
     }
     // Run the window that we just created
@@ -91,6 +96,18 @@ impl MainWindow{
                 .unwrap();
             // Match an event that happens to windows
             match event{
+                // Get HID inputs
+                Event::DeviceEvent { device_id: _device_id, event: dev_event } => {
+                    // Match what the event was
+                    match dev_event {
+                        // If it was a keyboard input, send it across the channel
+                        DeviceEvent::Key(keypress) => {
+                            let _result = self.keyboard_event_sender.try_send(keypress);
+                        },
+                        // If anything else, ignore it
+                        _ => {},
+                    }
+                },
                 // If a window redraw is requested, run this branch
                 // For window size changes, focus changes
                 Event::MainEventsCleared => {
