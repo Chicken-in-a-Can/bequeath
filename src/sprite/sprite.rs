@@ -12,11 +12,13 @@ use crate::render::pixel::{PixelList, Pixel};
 #[derive(Clone, Debug)]
 pub struct Sprite{
     pix_matrix: Vec<Vec<[u8; 4]>>,
+    start_x: u16,
+    start_y: u16,
 }
 
 impl Sprite{
     // Create a new sprite
-    pub fn new(file_name: &str) -> Self{
+    pub fn new(file_name: &str, start_x: u16, start_y: u16) -> Self{
         // Create a new empty matrix
         let mut pix_matrix: Vec<Vec<[u8; 4]>> = Vec::new();
 
@@ -47,12 +49,14 @@ impl Sprite{
         // Return our filled matrix
         return Self{
             pix_matrix,
+            start_x,
+            start_y,
         };
     }
 
     // Add a sprite to our pixel list
     // Pixel list is borrowed as mutable
-    pub fn add_to_pixel_list(&self, pixel_list: &mut PixelList, start_x: u16, start_y: u16){
+    pub fn add_to_pixel_list(&self, pixel_list: &mut PixelList){
         // Parse through both the x and y dimensions
         for x_pos in 0..self.pix_matrix.len(){
             for y_pos in 0..self.pix_matrix[x_pos].len(){
@@ -67,13 +71,20 @@ impl Sprite{
                         r,
                         g,
                         b,
-                        x_pos as u16 + start_x,
-                        y_pos as u16 + start_y,
+                        x_pos as u16 + self.start_x,
+                        y_pos as u16 + self.start_y,
                     );
                     // Add it to the borrowed list
                     pixel_list.add_pixel(rgb_pix);
                 }
             }
         }
+    }
+    pub fn get_location(&self) -> (u16, u16){
+        return (self.start_x, self.start_y);
+    }
+    pub fn set_location(&mut self, start_x: u16, start_y: u16){
+        self.start_x = start_x;
+        self.start_y = start_y;
     }
 }

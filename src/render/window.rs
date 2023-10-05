@@ -17,8 +17,7 @@ use winit::{
     event::{
         Event,
         WindowEvent,
-        KeyboardInput,
-        DeviceEvent,
+        KeyboardInput, ElementState,
     },
     event_loop::{
         ControlFlow,
@@ -96,18 +95,6 @@ impl MainWindow{
                 .unwrap();
             // Match an event that happens to windows
             match event{
-                // Get HID inputs
-                Event::DeviceEvent { device_id: _device_id, event: dev_event } => {
-                    // Match what the event was
-                    match dev_event {
-                        // If it was a keyboard input, send it across the channel
-                        DeviceEvent::Key(keypress) => {
-                            let _result = self.keyboard_event_sender.try_send(keypress);
-                        },
-                        // If anything else, ignore it
-                        _ => {},
-                    }
-                },
                 // If a window redraw is requested, run this branch
                 // For window size changes, focus changes
                 Event::MainEventsCleared => {
@@ -181,10 +168,22 @@ impl MainWindow{
                 },
                 // If the user requests to close the window, close the window
                 Event::WindowEvent {
-                    window_id,
-                    event: WindowEvent::CloseRequested,
-                } if window_id == self.window.id() => {
-                    *control_flow = ControlFlow::Exit;
+                    window_id, 
+                    event: window_event,
+                } => {
+                    match window_event {
+                        WindowEvent::KeyboardInput { device_id: _device_id, input, is_synthetic: _is_synthetic } => {
+                                if input.state == ElementState::Pressed{
+                                    let _result = self.keyboard_event_sender.try_send(input);
+                                }
+                        },
+                        WindowEvent::CloseRequested => {
+                            if window_id == self.window.id() {
+                                *control_flow = ControlFlow::Exit;
+                            }
+                        },
+                        _ => {},
+                    }
                 },
                 // If the user does something else to the window that isn't a request redraw or a
                 // close, ignore it
