@@ -1,4 +1,3 @@
-use std::collections::HashSet;
 
 /*
 *   Defines all pixel-related structs
@@ -8,6 +7,7 @@ use tiny_skia::Rect;
 
 use crate::constants;
 
+use std::collections::HashSet;
 
 // Information necessary for defining pixels.
 // Mainly for interaction between window size and pixel size

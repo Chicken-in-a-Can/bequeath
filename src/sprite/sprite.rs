@@ -80,9 +80,11 @@ impl Sprite{
             }
         }
     }
+    // Returns the location of the sprite
     pub fn get_location(&self) -> (u16, u16){
         return (self.start_x, self.start_y);
     }
+    // Sets the sprite to the desired location
     pub fn set_location(&mut self, start_x: u16, start_y: u16){
         self.start_x = start_x;
         self.start_y = start_y;
