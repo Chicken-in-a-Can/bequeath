@@ -1,7 +1,4 @@
-# Godot 4+ specific ignores
-.godot/
-
-
 # Added by cargo
 
-/target
+bengine/target
+blang/target

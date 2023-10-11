@@ -9,6 +9,7 @@ Making the engine in Rust, and the whole game in Rust too
  - `softbuffer`
  - `winit`
  - `image`
+ - `rodio`
 
 ## Ideas
  - [ ] Freeform magic circle creation
