@@ -1,7 +1,14 @@
 # BEQUEATH
 
 Game to try out making a magic system  
-Making the engine in Rust, and the whole game in Rust too 
+Making the engine in Rust, and the language  
+Game being made in the language I'm writing, and partially in Rust too  
+
+## Project structure
+ - `bengine`: Game engine (Bequeath engine)
+ - `blang`: Game language (Bequeath language)
+ - `bequeath`: Bequeath
+ - `assets`: Music, fonts, sprites, sfx, and more
 
 ## Libraries used:
  - Rust standard libraries
