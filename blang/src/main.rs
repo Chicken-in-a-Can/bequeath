@@ -1,8 +1,8 @@
-use blang::init::Init;
+use blang::init;
 
 use std::env;
 
 fn main(){
     let args: Vec<String> = env::args().collect();
-    let _init = Init::new(&args[1]);
+    let _init = init::read_directory(&args[1]);
 }
