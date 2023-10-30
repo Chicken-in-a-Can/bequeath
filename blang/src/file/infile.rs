@@ -1,4 +1,5 @@
 use std::fs;
+use crate::constants;
 
 pub struct InputFile{
     file_contents: Vec<String>,
@@ -18,10 +19,10 @@ impl InputFile{
                 .trim()
                 .to_owned()
             ).collect();
-        let mut line_number = 0;
-        while line_number < file_contents.len(){
-            if file_contents[line_number] == ""{
-                file_contents.remove(line_number);
+        let mut line_number: isize = 0;
+        while (line_number as usize) < file_contents.len(){
+            if file_contents[line_number as usize] == ""{
+                file_contents.remove(line_number as usize);
                 line_number = line_number - 1;
             }
             line_number += 1;
@@ -32,8 +33,12 @@ impl InputFile{
         };
     }
     pub fn get_imports(&self){
-        for line in self.file_contents{
-            if line[0..4] = "use "{}
+        for line in self.file_contents.clone(){
+            if line.len() >= 4 && &line[0..4] == "use "{
+                if constants::DEBUG{
+                    println!("{}", line[4..].to_owned());
+                }
+            }
         }
     }
 }

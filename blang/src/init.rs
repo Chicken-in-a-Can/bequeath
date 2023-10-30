@@ -14,6 +14,16 @@ pub fn read_directory(input_directory: &str) -> Vec<String>{
             .unwrap()
             .to_owned()
         ).collect();
-    return input_files
+    return input_files;
 }
 
+pub fn get_filetype(file_name: String) -> String{
+    let filetype: String;
+
+    filetype = match file_name.rsplit_once("."){
+        Some(split_file) => split_file.1.to_owned(),
+        None => "".to_owned(),
+    };
+
+    return filetype;
+}
