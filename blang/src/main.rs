@@ -6,7 +6,8 @@ use std::env;
 
 fn main(){
     let args: Vec<String> = env::args().collect();
-    let read_dir = init::read_directory(&args[1]);
+    let mut read_dir: Vec<String> = Vec::new();
+    init::read_directory(&args[1], &mut read_dir);
     for file in read_dir{
         let filetype = init::get_filetype(file.clone());
         if filetype == "rs"{
