@@ -32,13 +32,16 @@ impl InputFile{
             file_contents,
         };
     }
-    pub fn get_imports(&self){
+    pub fn get_imports(&self) -> Vec<String>{
+        let mut import_vec: Vec<String> = Vec::new();
         for line in self.file_contents.clone(){
             if line.len() >= 4 && &line[0..4] == "use "{
                 if constants::DEBUG{
                     println!("{}", line[4..].to_owned());
                 }
+                import_vec.push(line[4..].to_owned())
             }
         }
+        return import_vec;
     }
 }

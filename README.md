@@ -6,7 +6,7 @@ Game being made in the language I'm writing, and partially in Rust too
 
 ## Project structure
  - `bengine`: Game engine (Bequeath engine)
- - `blang`: Game language (Bequeath language)
+ - `beqlang`: Game language (Bequeath language)
  - `bequeath`: Bequeath
  - `assets`: Music, fonts, sprites, sfx, and more
 
