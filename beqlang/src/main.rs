@@ -12,7 +12,7 @@ fn main(){
     let args: Vec<String> = env::args().collect();
     let mut read_dir: Vec<String> = Vec::new();
 
-    let cli: CLI = CLI::new(args);
+    let cli: CLI = CLI::parse(args);
 
     init::read_directory(&cli.get_root_dir(), &mut read_dir);
     for file in read_dir{
