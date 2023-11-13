@@ -18,11 +18,26 @@ Game being made in the language I'm writing, and partially in Rust too
  - `image`
  - `rodio`
 
-## Ideas
+## Checklist for self-validation when I complete something
+### Engine
+ - [x] Create windows
+ - [x] Render sprites
+ - [x] Move sprites
+ - [ ] Play audio
+ - [x] Accept keyboard inputs
+ - [x] Run  at stable framerate
+ - [x] Multithread everything
+
+### Language
+ - [x] Accept command line arguments
+ - [x] Read in imports
+ - [ ] Get variables functioning
+ - [ ] Get functions functioning
+ - [ ] Get objects functioning
+ - [ ] Integrate with engine
+ - [ ] Multithread everything to compensate for the inefficiency caused by my reliance on OOP
+
+### Game
  - [ ] Freeform magic circle creation
- - [ ] Earth element
- - [ ] Fire element
- - [ ] Lightning element
- - [ ] Water element
  - [ ] Roguelike
  - [ ] Procedurally generated spire for each attempt
