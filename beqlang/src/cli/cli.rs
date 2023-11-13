@@ -30,18 +30,6 @@ impl CLI{
     fn parse_args(&mut self){
         for arg in self.args.clone(){
             match arg.as_str(){
-                "--fresh" => {
-                    self.build_args.insert(BuildType::FRESH);
-                },
-                "--update" => {
-                    self.build_args.insert(BuildType::UPDATE);
-                },
-                "--release" => {
-                    self.build_args.insert(BuildType::RELEASE);
-                },
-                "--debug" => {
-                    self.build_args.insert(BuildType::DEBUG);
-                },
                 "--help" | "-h" => {
                     println!("
 Bequeath version {}
@@ -50,13 +38,33 @@ bequeath [args] $SRC_DIR
 
 Args:
 --help / -h:            Prints this help message
---fresh / -f:           Build in fresh build dir
+--fresh / -f:           Build in fresh build dir. Default
 --update / -u:          Updates existing build directory
 --release / -r:         Compiles code for release. Takes longer, but runs faster
---debug / -d:           Compiles code for debug. Much faster, but runs slower. for debugging
+--debug / -d:           Compiles code for debug. Much faster, but runs slower. For debugging. Default
+--run-debug             Adds debug/logging statements into the program
+--run-release           Doesn't add debug/logging statements into the program. Default
                     ", constants::VERSION);
                    exit(0);
                 }
+                "--fresh" | "-f" => {
+                    self.build_args.insert(BuildType::Fresh);
+                },
+                "--update" | "-u" => {
+                    self.build_args.insert(BuildType::Update);
+                },
+                "--release" | "-r" => {
+                    self.build_args.insert(BuildType::Release);
+                },
+                "--debug" | "-d" => {
+                    self.build_args.insert(BuildType::Debug);
+                },
+                "--run-debug" => {
+                    self.build_args.insert(BuildType::RunDebug);
+                },
+                "--run-release" => {
+                    self.build_args.insert(BuildType::RunRelease);
+                },
                 _ => {},
             }
         }

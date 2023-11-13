@@ -1,7 +1,9 @@
 #[derive(Eq, PartialEq, Hash)]
 pub enum BuildType {
-    FRESH,
-    UPDATE,
-    DEBUG,
-    RELEASE,
+    Fresh,
+    Update,
+    Debug,
+    Release,
+    RunDebug,
+    RunRelease,
 }
