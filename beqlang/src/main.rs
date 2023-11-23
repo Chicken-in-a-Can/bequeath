@@ -15,13 +15,13 @@ fn main(){
     let cli: CLI = CLI::parse(args);
 
     init::read_directory(&cli.get_root_dir(), &mut read_dir);
-    for file in read_dir{
-        let filetype = init::get_filetype(file.clone());
-        if filetype == "rs"{
-            let infile: InputFile = InputFile::new(&file);
-            imports.add_imports(file.clone(), infile.get_imports());
+    for file_name in read_dir{
+        let filetype = init::get_filetype(file_name.clone());
+        if constants::FILETYPES.contains(&filetype.as_str()){
+            let mut infile: InputFile = InputFile::new(&file_name);
+            imports.add_imports(file_name.clone(), infile.get_imports());
             if constants::DEBUG{
-                println!("{}", file);
+                println!("{}", file_name);
             }
         }
     }

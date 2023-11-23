@@ -1,4 +1,5 @@
 use std::{fs::File, io::Write};
+use crate::imports::Imports;
 
 pub struct OutputFile{
     file_contents: Vec<String>,
@@ -21,6 +22,12 @@ impl OutputFile{
         };
         for line in self.file_contents.clone(){
             let _result = file_to_write.write_all(String::from(line + "\n").as_bytes());
+        }
+    }
+    pub fn add_imports(&mut self, imports: Imports){
+        let imports = imports.get_import_set(self.file_name.clone());
+        for import in imports{
+            self.file_contents.insert(0, format!("use {};", import));
         }
     }
 }

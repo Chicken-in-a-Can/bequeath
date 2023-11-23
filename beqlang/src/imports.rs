@@ -32,4 +32,7 @@ impl Imports{
             self.add_import(file_name.clone(), import);
         }
     }
+    pub fn get_import_set(&self, file_name: String) -> HashSet<String>{
+        return self.file_inclusions.get(&file_name).unwrap().clone();
+    }
 }
