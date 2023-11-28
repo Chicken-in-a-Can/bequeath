@@ -44,6 +44,7 @@ Args:
 --debug / -d:           Compiles code for debug. Much faster, but runs slower. For debugging. Default
 --run-debug             Adds debug/logging statements into the program
 --run-release           Doesn't add debug/logging statements into the program. Default
+--test_run              Does a quick run in debug. Auto enables --run-debug and --debug
                     ", constants::VERSION);
                    exit(0);
                 }
@@ -65,6 +66,9 @@ Args:
                 "--run-release" => {
                     self.build_args.insert(BuildType::RunRelease);
                 },
+                "--test-run" => {
+                    self.build_args.insert(BuildType::TestRun);
+                }
                 _ => {},
             }
         }

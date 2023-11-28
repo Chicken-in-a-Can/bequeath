@@ -26,6 +26,7 @@ pub enum BuildType {
     Release,
     RunDebug,
     RunRelease,
+    TestRun,
 }
 
 pub struct Build{
@@ -49,7 +50,9 @@ impl Build{
         let build_command: String;
         if self.build_options.contains(&BuildType::Debug) || (!self.build_options.contains(&BuildType::Release) && DEFAULT_COMPILE_TYPE == BuildType::Debug){
             build_command = String::from("cargo build");
-        } else{
+        } else if self.build_options.contains(&BuildType::TestRun){
+            build_command = String::from("cargo run");
+        }else{
             build_command = String::from("cargo build --release");
         }
         let rust_init: Output = if cfg!(target_os = "windows"){
