@@ -1,0 +1,47 @@
+// In development. Written down here for future reference for me and others
+// Just because it's written here doesn't mean it works
+// I just forget what syntax I'll want
+
+// Main function runs like in any other language
+// Main function can return void or int, whichever is preferred
+
+void main(){
+    // Whitespace not needed, but looks nice. Won't even be translated to Rust
+    // Thus, not at all necessary, but your code will be unreadable if you don't, so please do include it
+
+    // Declare integer
+    int varname;
+
+    // Declare unsigned integer
+    uint varname;
+
+    // Declare character
+    char varname;
+
+    // Declare string
+    string varname;
+
+    // Declare boolean
+    bool varname;
+
+    // Since we last devlared `varname` as a boolean, let's initialize it's value
+    varname = false;
+
+    // Let's do arrays. These require size to be declared upon initialization
+    int[4] test_array = [1, 2, 3, 4];
+ 
+    // Set variable to value at index 0 of our array
+    int other_var = test_array[0];
+
+    // Set variable to value at index that's a variable of our array
+    int other_other_var = test_array[other_var];
+
+    // Call our function
+    int other_other_other_var = test_function(other_other_var);
+}
+
+// A function returning the number put into it added to 2
+int test_function(int test_int){
+    test_int += 2;
+    return test_int;
+}

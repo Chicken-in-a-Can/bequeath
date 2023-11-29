@@ -7,8 +7,9 @@ Game being made in the language I'm writing, and partially in Rust too
 ## Project structure
  - `bengine`: Game engine (Bequeath engine)
  - `beqlang`: Game language (Bequeath language)
+ - `beqlang/syntax.guide`: Syntax guide for Beqeath programming language (Beqlang)
  - `bequeath`: Bequeath
- - `assets`: Music, fonts, sprites, sfx, and more
+ - `bequeath/assets`: Music, fonts, sprites, sfx, and more
 
 ## Libraries used:
  - Rust standard libraries
