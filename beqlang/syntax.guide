@@ -9,10 +9,10 @@ void main(){
     // Whitespace not needed, but looks nice. Won't even be translated to Rust
     // Thus, not at all necessary, but your code will be unreadable if you don't, so please do include it
 
-    // Declare integer
+    // Declare integer. 32 bit signed
     int varname;
 
-    // Declare unsigned integer
+    // Declare unsigned integer. 32 bit unsigned
     uint varname;
 
     // Declare character
