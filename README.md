@@ -2,10 +2,12 @@
 
 Game to try out making a magic system  
 Making the engine in Rust, and the language  
+And decided that it would be cool if I made the enemy AI use a neural network, since I'm too lazy to code it myself  
 Game being made in the language I'm writing, and partially in Rust too  
 
 ## Project structure
  - `bengine`: Game engine (Bequeath engine)
+ - `beqnet`: Game AI's neural network
  - `beqlang`: Game language (Bequeath language)
  - `beqlang/syntax.guide`: Syntax guide for Beqeath programming language (Beqlang)
  - `bequeath`: Bequeath
@@ -18,6 +20,7 @@ Game being made in the language I'm writing, and partially in Rust too
  - `winit`
  - `image`
  - `rodio`
+ - `rand`
 
 ## Checklist for self-validation when I complete something
 ### Engine
