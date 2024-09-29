@@ -2,6 +2,7 @@ use std::fs;
 
 pub struct InputFile{
     file_contents: Vec<String>,
+    index: usize,
 }
 
 impl InputFile{
@@ -29,9 +30,28 @@ impl InputFile{
 
         return Self{
             file_contents,
+            index: 0,
         };
     }
     pub fn get_contents(&self) -> Vec<String>{
         return self.file_contents.clone();
+    }
+    pub fn set_index(&mut self, index: usize, line: String){
+        self.file_contents[index] = line;
+    }
+    pub fn get_index(&self, index: usize) -> String{
+        return self.file_contents[index];
+    }
+}
+
+impl Iterator for InputFile{
+    type Item = String;
+    fn next(&mut self) -> Option<String>{
+        self.index += 1;
+        if self.index < self.file_contents.len(){
+            return Some(self.file_contents[self.index]);
+        } else{
+            return None;
+        }
     }
 }

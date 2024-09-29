@@ -1,4 +1,4 @@
-
+use crate::file::infile::InputFile;
 
 pub enum PrimitiveTypes{
     INT,
@@ -9,4 +9,6 @@ pub enum PrimitiveTypes{
     FLOAT,
 }
 
-pub fn swap_primitives(){}
+pub fn swap_primitives(infile: InputFile){
+    for line in infile.get_contents(){}
+}
